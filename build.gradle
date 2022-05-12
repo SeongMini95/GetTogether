@@ -1,19 +1,48 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.6.7"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+    }
 }
 
-group 'com.jsm.gettogether'
-version '1.0-SNAPSHOT'
+subprojects {
+    group 'com.jsm.clubmoa'
+    version '1.0.0'
 
-repositories {
-    mavenCentral()
-}
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
+    sourceCompatibility = 11
 
-test {
-    useJUnitPlatform()
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    configurations {
+        all {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
