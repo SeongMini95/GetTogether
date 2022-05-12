@@ -3,6 +3,10 @@ package com.jsm.gettogether.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsm.gettogether.domain.member.Member;
 import com.jsm.gettogether.domain.member.repository.MemberRepository;
+import com.jsm.gettogether.domain.memberrole.MemberRole;
+import com.jsm.gettogether.domain.memberrole.MemberRoleId;
+import com.jsm.gettogether.domain.memberrole.enums.RoleDiv;
+import com.jsm.gettogether.domain.memberrole.repository.MemberRoleRepository;
 import com.jsm.gettogether.dto.member.request.SignUpRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +38,9 @@ class MemberApiControllerTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private MemberRoleRepository memberRoleRepository;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -43,6 +50,7 @@ class MemberApiControllerTest {
 
     @AfterEach
     void tearDown() {
+        memberRoleRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
 
@@ -62,6 +70,7 @@ class MemberApiControllerTest {
                 .content(new ObjectMapper().writeValueAsString(signUpRequestDto)));
 
         Member member = memberRepository.findAll().get(0);
+        MemberRole memberRole = memberRoleRepository.findAll().get(0);
 
         // then
         actions
@@ -69,5 +78,6 @@ class MemberApiControllerTest {
 
         assertThat(member.getEmail()).isEqualTo(signUpRequestDto.getEmail());
         assertThat(passwordEncoder.matches(signUpRequestDto.getPassword(), member.getPassword())).isTrue();
+        assertThat(memberRole).isEqualTo(MemberRole.builder().memberRoleId(MemberRoleId.builder().member(member).roleDiv(RoleDiv.GUEST).build()).build());
     }
 }
