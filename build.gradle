@@ -46,3 +46,9 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+project(":GetTogether-api") {
+    dependencies {
+        implementation project(":GetTogether-core")
+    }
+}
