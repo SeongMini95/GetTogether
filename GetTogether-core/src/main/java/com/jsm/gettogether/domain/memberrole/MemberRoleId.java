@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Embeddable
 public class MemberRoleId implements Serializable {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

@@ -1,4 +1,4 @@
-package com.jsm.gettogether.config.security;
+package com.jsm.gettogether.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

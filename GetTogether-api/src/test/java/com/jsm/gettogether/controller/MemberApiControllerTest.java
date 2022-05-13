@@ -1,10 +1,11 @@
 package com.jsm.gettogether.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsm.gettogether.domain.emailcertify.EmailCertify;
+import com.jsm.gettogether.domain.emailcertify.repository.EmailCertifyRepository;
 import com.jsm.gettogether.domain.member.Member;
 import com.jsm.gettogether.domain.member.repository.MemberRepository;
 import com.jsm.gettogether.domain.memberrole.MemberRole;
-import com.jsm.gettogether.domain.memberrole.MemberRoleId;
 import com.jsm.gettogether.domain.memberrole.enums.RoleDiv;
 import com.jsm.gettogether.domain.memberrole.repository.MemberRoleRepository;
 import com.jsm.gettogether.dto.member.request.SignUpRequestDto;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@ActiveProfiles("not-email")
 class MemberApiControllerTest {
 
     @Autowired
@@ -41,6 +44,9 @@ class MemberApiControllerTest {
     private MemberRoleRepository memberRoleRepository;
 
     @Autowired
+    private EmailCertifyRepository emailCertifyRepository;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -50,6 +56,7 @@ class MemberApiControllerTest {
 
     @AfterEach
     void tearDown() {
+        emailCertifyRepository.deleteAllInBatch();
         memberRoleRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
@@ -71,6 +78,7 @@ class MemberApiControllerTest {
 
         Member member = memberRepository.findAll().get(0);
         MemberRole memberRole = memberRoleRepository.findAll().get(0);
+        EmailCertify emailCertify = emailCertifyRepository.findAll().get(0);
 
         // then
         actions
@@ -78,6 +86,7 @@ class MemberApiControllerTest {
 
         assertThat(member.getEmail()).isEqualTo(signUpRequestDto.getEmail());
         assertThat(passwordEncoder.matches(signUpRequestDto.getPassword(), member.getPassword())).isTrue();
-        assertThat(memberRole).isEqualTo(MemberRole.builder().memberRoleId(MemberRoleId.builder().member(member).roleDiv(RoleDiv.GUEST).build()).build());
+        assertThat(memberRole.getMemberRoleId().getRoleDiv()).isEqualTo(RoleDiv.GUEST);
+        assertThat(emailCertify).isNotNull();
     }
 }

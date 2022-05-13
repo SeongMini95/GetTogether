@@ -1,9 +1,11 @@
 package com.jsm.gettogether.domain.emailcertify;
 
+import com.jsm.gettogether.domain.BaseTimeEntity;
 import com.jsm.gettogether.domain.emailcertify.converter.CertifyDivConverter;
 import com.jsm.gettogether.domain.emailcertify.enums.CertifyDiv;
 import com.jsm.gettogether.domain.member.Member;
 import lombok.*;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,14 +15,14 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "email_certify")
-public class EmailCertify {
+public class EmailCertify extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
@@ -52,5 +54,15 @@ public class EmailCertify {
         this.certifyIv = certifyIv;
         this.isUse = isUse;
         this.expireDatetime = expireDatetime;
+    }
+
+    public EmailCertify(Member member, CertifyDiv certifyDiv) {
+        this.member = member;
+        this.certifyDiv = certifyDiv;
+        this.certifyCode = RandomStringUtils.randomAlphanumeric(255);
+        this.certifyKey = RandomStringUtils.randomAlphanumeric(32);
+        this.certifyIv = RandomStringUtils.randomAlphanumeric(16);
+        this.isUse = false;
+        this.expireDatetime = LocalDateTime.now().plusDays(1L);
     }
 }

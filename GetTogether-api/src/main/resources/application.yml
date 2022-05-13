@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: db
+    include: db, mail
 
   session:
     store-type: jdbc
