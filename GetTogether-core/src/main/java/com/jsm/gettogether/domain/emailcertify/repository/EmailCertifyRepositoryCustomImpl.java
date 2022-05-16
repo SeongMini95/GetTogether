@@ -1,6 +1,7 @@
 package com.jsm.gettogether.domain.emailcertify.repository;
 
 import com.jsm.gettogether.domain.emailcertify.EmailCertify;
+import com.jsm.gettogether.domain.emailcertify.enums.CertifyDiv;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -26,5 +27,16 @@ public class EmailCertifyRepositoryCustomImpl implements EmailCertifyRepositoryC
                         emailCertify.expireDatetime.after(now))
                 .orderBy(emailCertify.id.desc())
                 .fetchFirst());
+    }
+
+    @Override
+    public Optional<EmailCertify> findByCertifyInfo(Long id, String email, CertifyDiv certifyDiv) {
+        return Optional.ofNullable(factory
+                .selectFrom(emailCertify)
+                .where(emailCertify.id.eq(id),
+                        emailCertify.member.email.eq(email),
+                        emailCertify.certifyDiv.eq(certifyDiv),
+                        emailCertify.isUse.eq(false))
+                .fetchOne());
     }
 }

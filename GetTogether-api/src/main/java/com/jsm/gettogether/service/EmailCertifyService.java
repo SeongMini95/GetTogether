@@ -27,4 +27,9 @@ public class EmailCertifyService {
 
         return new ConfirmCertifyResponseDto(emailCertify);
     }
+
+    @Transactional(readOnly = true)
+    public EmailCertify findByCertifyInfo(Long id, String email, CertifyDiv certifyDiv) {
+        return emailCertifyRepository.findByCertifyInfo(id, email, certifyDiv).orElseThrow(EmailCertifyNotFoundException::new);
+    }
 }

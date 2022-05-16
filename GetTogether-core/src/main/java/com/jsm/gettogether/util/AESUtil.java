@@ -21,7 +21,7 @@ public class AESUtil {
         return Base64.getEncoder().encodeToString(encryptStr);
     }
 
-    public String decrypt(String str, String key, String iv) throws Exception {
+    public static String decrypt(String str, String key, String iv) throws Exception {
         Cipher cipher = Cipher.getInstance(alg);
         SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "AES");
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes());
