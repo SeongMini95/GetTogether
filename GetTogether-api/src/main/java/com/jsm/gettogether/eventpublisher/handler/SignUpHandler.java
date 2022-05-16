@@ -5,6 +5,7 @@ import com.jsm.gettogether.util.MailHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -20,6 +21,7 @@ public class SignUpHandler {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
+    @Async
     @TransactionalEventListener
     public void sendSignUpEmail(SignUpEvent event) throws Exception {
         Map<String, Object> context = new HashMap<>();

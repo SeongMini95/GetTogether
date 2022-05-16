@@ -65,4 +65,8 @@ public class EmailCertify extends BaseTimeEntity {
         this.isUse = false;
         this.expireDatetime = LocalDateTime.now().plusDays(1L);
     }
+
+    public void used() {
+        this.isUse = true;
+    }
 }

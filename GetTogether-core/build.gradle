@@ -11,6 +11,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
     testRuntimeOnly 'com.h2database:h2'
 
     annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa")
