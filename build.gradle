@@ -52,3 +52,9 @@ project(":GetTogether-api") {
         implementation project(":GetTogether-core")
     }
 }
+
+project(":GetTogether-web") {
+    dependencies {
+        implementation project(":GetTogether-core")
+    }
+}

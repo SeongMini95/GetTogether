@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    include: db
+
+  session:
+    store-type: jdbc
+
+server:
+  port: 8080
