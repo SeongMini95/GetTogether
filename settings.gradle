@@ -1,4 +1,5 @@
 rootProject.name = 'GetTogether'
 include 'GetTogether-core'
 include 'GetTogether-api'
+include 'GetTogether-web'
 
