@@ -53,6 +53,7 @@ class EmailCertifyApiControllerTest {
         Member member = memberRepository.save(Member.builder()
                 .email("test123@naver.com")
                 .password("!test123")
+                .nickname("test123")
                 .isLeave(false)
                 .isDeny(false)
                 .build());

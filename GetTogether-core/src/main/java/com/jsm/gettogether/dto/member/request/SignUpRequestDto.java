@@ -13,18 +13,21 @@ public class SignUpRequestDto {
     private String email;
     private String password;
     private String passwordConfirm;
+    private String nickname;
 
     @Builder
-    public SignUpRequestDto(String email, String password, String passwordConfirm) {
+    public SignUpRequestDto(String email, String password, String passwordConfirm, String nickname) {
         this.email = email;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
+        this.nickname = nickname;
     }
 
     public Member toEntity(String encPassword) {
         return Member.builder()
                 .email(email)
                 .password(encPassword)
+                .nickname(nickname)
                 .isLeave(false)
                 .isDeny(false)
                 .build();

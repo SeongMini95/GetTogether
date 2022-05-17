@@ -22,7 +22,7 @@ public class Member extends BaseTimeEntity {
     @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "nickname", length = 10)
+    @Column(name = "nickname", nullable = false, length = 10)
     private String nickname;
 
     @Column(name = "profile_path")
