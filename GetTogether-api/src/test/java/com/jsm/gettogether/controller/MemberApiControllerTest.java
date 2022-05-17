@@ -79,6 +79,7 @@ class MemberApiControllerTest {
                 .email("test123@naver.com")
                 .password("!test123")
                 .passwordConfirm("!test123")
+                .nickname("test123")
                 .build();
 
         // when
@@ -95,6 +96,7 @@ class MemberApiControllerTest {
                 .andExpect(status().isOk());
 
         assertThat(member.getEmail()).isEqualTo(signUpRequestDto.getEmail());
+        assertThat(member.getNickname()).isEqualTo(signUpRequestDto.getNickname());
         assertThat(passwordEncoder.matches(signUpRequestDto.getPassword(), member.getPassword())).isTrue();
         assertThat(memberRole.getMemberRoleId().getRoleDiv()).isEqualTo(RoleDiv.GUEST);
         assertThat(emailCertify).isNotNull();
@@ -107,6 +109,7 @@ class MemberApiControllerTest {
         Member member = memberRepository.save(Member.builder()
                 .email("test123@naver.com")
                 .password("!test123")
+                .nickname("test123")
                 .isLeave(false)
                 .isDeny(false)
                 .build());
